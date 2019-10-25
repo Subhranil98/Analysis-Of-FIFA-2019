@@ -27,3 +27,14 @@ for i in dataset_columns:
     c += 1
             
 dataset = dataset.drop(l)
+
+
+dataset['Value'] = dataset['Value'].str[1:-1]
+dataset["Value"] = pd.to_numeric(dataset["Value"])
+dataset['Wage'] = dataset['Wage'].str[1:-1]
+dataset["Wage"] = pd.to_numeric(dataset["Wage"])
+dataset['Height'] = dataset['Height'].str[:1]+'.'+dataset['Height'].str[3:]
+dataset["Height"] = pd.to_numeric(dataset["Height"])
+dataset['Weight'] = dataset['Weight'].str[:-3]
+dataset["Weight"] = pd.to_numeric(dataset["Weight"])
+
