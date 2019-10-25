@@ -189,7 +189,7 @@ plt.xticks( range(len(top_clubs)), top_clubs, rotation=90)
 plt.xlabel('Unique Clubs')
 plt.ylabel('Overall Rating')
 plt.title('Mean Overall Distribution for Top Clubs')
-
+#As we can see , all the top 21 teams have comparable Overall Performance, though Juventis is max.
 
 #Observing the effect of age on Wages
 
