@@ -114,3 +114,11 @@ Southampton
 Valencia CF       
 
 '''
+
+#Finding Different Countries and No of Players in them
+
+print("No of Unique Nationalities present : ",dataset['Nationality'].nunique())
+print("No of players from each Country : ", end = '\n')
+print(dataset['Nationality'].value_counts())
+
+#As is evident from the observations , England, Germany, Spain have the highest number of players.
