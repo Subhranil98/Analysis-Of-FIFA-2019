@@ -81,3 +81,36 @@ plt.title('Relation potential and age with respected value of players')
   
 # function to show the plot 
 plt.show() 
+
+#No of unique clubs and no. of players in each such club
+
+print("No of Unique clubs present : ",dataset['Club'].nunique())
+print("No of players in each of the clubs : ", end = '\n')
+print(dataset['Club'].value_counts())
+
+#We aim to find the club which has maximum no. of players
+
+print("Maximum No of players in any club ",max(list(dataset['Club'].value_counts())))
+print(dataset['Club'].value_counts() == 33)
+
+#These observations show that the following clubs have highest number of players
+'''
+Frosinine
+Borussia Dortmund
+Newcastle United
+Fortuna Düsseldorf
+RC Celta                      
+Cardiff City                  
+Burnley                       
+AS Monaco
+TSG 1899 Hoffenheim           
+Everton                       
+Empoli                        
+Rayo Vallecano                
+Wolverhampton Wanderers       
+Eintracht Frankfurt           
+CD Leganés
+Southampton                   
+Valencia CF       
+
+'''
