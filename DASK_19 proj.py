@@ -197,3 +197,17 @@ mean_wage_per_age = dataset.groupby('Age')['Wage'].mean()
 p = sns.barplot(x = mean_wage_per_age.index, y = mean_wage_per_age.values)
 p = plt.xticks(rotation=90)
 
+
+#Distribution of wages based on clubs
+
+clubs = dataset['Club']
+
+data_club = dataset.loc[dataset['Club'].isin(clubs) & dataset['Wage']]
+
+plt.rcParams['figure.figsize'] = (16, 8)
+ax = sns.boxplot(x = 'Club', y = 'Wage', data = data_club, palette = 'Reds')
+ax.set_xlabel(xlabel = 'Names of Clubs', fontsize = 10)
+ax.set_ylabel(ylabel = 'Distribution', fontsize = 10)
+ax.set_title(label = 'Distribution of Wages based on Clubs', fontsize = 20)
+plt.xticks(rotation = 90)
+plt.show()
