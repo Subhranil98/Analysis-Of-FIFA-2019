@@ -135,3 +135,26 @@ attr=['Overall','Potential','Crossing', 'Finishing', 'HeadingAccuracy', 'ShortPa
 
 for i in attr:
     print("Top performance in ",i," ",str(dataset.loc[dataset[i].idxmax()][0]))
+    
+    
+#Plotting graph between Overall Performance and Age
+    
+unique_ages = dataset['Age'].unique()
+
+overall_accr_ages = []
+
+for i in unique_ages:
+    d_tr_f = dataset['Age'] == i
+    d = dataset[d_tr_f]
+    m = d['Overall'].mean()
+    overall_accr_ages.append(m)
+    
+plt.scatter(unique_ages,overall_accr_ages)
+plt.xlabel('Unique Ages')
+plt.ylabel('Overall Rating')
+plt.title('Mean Overall vs Age')
+
+#From the above plot we observe that the mean overall rating increases as the age increases upto 30.
+# Mean Overall Rating remains constant till 35 beyond which it decreases.
+#We infer that young players gain experience as the play over the years, then reach a saturation level,
+#beyond which with age their performance decreases.
