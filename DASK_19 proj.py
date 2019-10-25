@@ -189,3 +189,11 @@ plt.xticks( range(len(top_clubs)), top_clubs, rotation=90)
 plt.xlabel('Unique Clubs')
 plt.ylabel('Overall Rating')
 plt.title('Mean Overall Distribution for Top Clubs')
+
+
+#Observing the effect of age on Wages
+
+mean_wage_per_age = dataset.groupby('Age')['Wage'].mean()
+p = sns.barplot(x = mean_wage_per_age.index, y = mean_wage_per_age.values)
+p = plt.xticks(rotation=90)
+
