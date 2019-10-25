@@ -38,3 +38,33 @@ dataset["Height"] = pd.to_numeric(dataset["Height"])
 dataset['Weight'] = dataset['Weight'].str[:-3]
 dataset["Weight"] = pd.to_numeric(dataset["Weight"])
 
+
+def plotCorrelationMatrix(df, graphWidth):
+    #filename = df.dataframeName
+    #df = df.dropna('columns') # drop columns with NaN
+    df = df[[col for col in df if df[col].nunique() > 1]] # keep columns where there are more than 1 unique values
+    if df.shape[1] < 2:
+        print(f'No correlation plots shown: The number of non-NaN or constant columns ({df.shape[1]}) is less than 2')
+        return
+    corr = df.corr()
+    plt.figure(num=None, figsize=(graphWidth, graphWidth), dpi=80, facecolor='w', edgecolor='k')
+    corrMat = plt.matshow(corr, fignum = 1)
+    plt.xticks(range(len(corr.columns)), corr.columns, rotation=90)
+    plt.yticks(range(len(corr.columns)), corr.columns)
+    plt.gca().xaxis.tick_bottom()
+    plt.colorbar(corrMat)
+    #plt.title(f'Correlation Matrix for {filename}', fontsize=15)
+    plt.show()
+
+
+plotCorrelationMatrix(dataset, 16)
+
+'''
+Height and weight are not strongly correlated to any other variable, so they don't contribute much towards performance.
+ From the above correlogram the following attributes are strongly coorelated :-
+1) Overall-Reaction : the better reaction speed of players the better will be their overall performance
+2) Overall-Composure : More cool and calm the player better will be the performance
+3) LongPassing,BallControl-Heading accuracy 
+4) LongShots-ShotPower
+5) Dribbling-Position 
+'''
