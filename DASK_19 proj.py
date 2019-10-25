@@ -211,3 +211,25 @@ ax.set_ylabel(ylabel = 'Distribution', fontsize = 10)
 ax.set_title(label = 'Distribution of Wages based on Clubs', fontsize = 20)
 plt.xticks(rotation = 90)
 plt.show()
+
+
+#Variation of rating with age
+
+plt.figure(figsize=[16,5])
+plt.suptitle('Overall Rating Vs Age', fontsize=16)
+
+plt.subplot(1,2,1)
+bin_x = np.arange(dataset['Age'].min(), dataset['Age'].max()+1, 1)
+bin_y = np.arange(dataset['Overall'].min(), dataset['Overall'].max()+2, 2)
+plt.hist2d(x = dataset['Age'], y = dataset['Overall'], cmap="YlGnBu", bins=[bin_x, bin_y])
+plt.colorbar()
+plt.xlabel('Age (years)')
+plt.ylabel('Overall Rating')
+
+plt.subplot(1,2,2)
+plt.scatter(x = dataset['Age'], y = dataset['Overall'], alpha=0.25, marker='.')
+plt.xlabel('Age (years)')
+plt.ylabel('Overall Rating')
+plt.show()
+
+
