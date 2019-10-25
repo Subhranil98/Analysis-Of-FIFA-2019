@@ -68,3 +68,16 @@ Height and weight are not strongly correlated to any other variable, so they don
 4) LongShots-ShotPower
 5) Dribbling-Position 
 '''
+
+plt.plot(dataset['Age'],dataset['Potential']) 
+  
+# naming the x axis 
+plt.xlabel('Age') 
+# naming the y axis 
+plt.ylabel('Potential') 
+  
+# giving a title to my graph 
+plt.title('Relation potential and age with respected value of players') 
+  
+# function to show the plot 
+plt.show() 
