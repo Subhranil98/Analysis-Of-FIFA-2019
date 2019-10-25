@@ -166,3 +166,26 @@ fig = plt.figure(figsize=(25, 10))
 p = sns.countplot(x='Nationality', data=dataset)
 _ = plt.setp(p.get_xticklabels(), rotation=90)
 
+# Finding distribution of Mean Overall Rating among clubs
+
+unique_clubs = list(dataset['Club'].unique())
+unique_clubs = [x for x in unique_clubs if str(x) != 'nan']
+top_clubs = []
+
+overall_accr_clubs = []
+
+for i in unique_clubs:
+    d_tr_f = dataset['Club'] == i
+    d = dataset[d_tr_f]
+    m = d['Overall'].mean()
+    if m > 75:
+        top_clubs.append(i)
+        overall_accr_clubs.append(m)
+    
+
+plt.bar(top_clubs, overall_accr_clubs)
+# Rotation of the bars names
+plt.xticks( range(len(top_clubs)), top_clubs, rotation=90)
+plt.xlabel('Unique Clubs')
+plt.ylabel('Overall Rating')
+plt.title('Mean Overall Distribution for Top Clubs')
