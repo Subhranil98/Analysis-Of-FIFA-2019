@@ -122,3 +122,16 @@ print("No of players from each Country : ", end = '\n')
 print(dataset['Nationality'].value_counts())
 
 #As is evident from the observations , England, Germany, Spain have the highest number of players.
+
+#We aim to find Top Player based on the following Attributes
+
+attr=['Overall','Potential','Crossing', 'Finishing', 'HeadingAccuracy', 'ShortPassing', 'Volleys',
+       'Dribbling', 'Curve', 'FKAccuracy', 'LongPassing', 'BallControl',
+       'Acceleration', 'SprintSpeed', 'Agility', 'Reactions', 'Balance',
+       'ShotPower', 'Jumping', 'Stamina', 'Strength', 'LongShots',
+       'Aggression', 'Interceptions', 'Positioning', 'Vision', 'Penalties',
+       'Composure', 'Marking', 'StandingTackle', 'SlidingTackle', 'GKDiving',
+       'GKHandling', 'GKKicking', 'GKPositioning', 'GKReflexes']
+
+for i in attr:
+    print("Top performance in ",i," ",str(dataset.loc[dataset[i].idxmax()][0]))
