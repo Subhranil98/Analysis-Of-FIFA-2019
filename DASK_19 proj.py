@@ -158,3 +158,11 @@ plt.title('Mean Overall vs Age')
 # Mean Overall Rating remains constant till 35 beyond which it decreases.
 #We infer that young players gain experience as the play over the years, then reach a saturation level,
 #beyond which with age their performance decreases.
+
+
+#Ploting the share of each nation in term of number of players
+
+fig = plt.figure(figsize=(25, 10))
+p = sns.countplot(x='Nationality', data=dataset)
+_ = plt.setp(p.get_xticklabels(), rotation=90)
+
