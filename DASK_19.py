@@ -322,3 +322,35 @@ X = scaled.fit_transform(attributes)
 recommendations = NearestNeighbors(n_neighbors=5,algorithm='kd_tree')
 recommendations.fit(X)
 
+#Get Similar Players index
+
+player_index = recommendations.kneighbors(X)[1]
+
+player_index
+
+#Defining a recommend function to display results
+
+def get_index(x):
+    return df[df['Name']==x].index.tolist()[0]
+
+def recommend_similar(player):
+    print("These are 4 players similar to {} : ".format(player))
+    index=  get_index(player)
+    for i in player_index[index][1:]:
+        print("Name: {0}\nPosition: {1}\n".format(df.iloc[i]['Name'],df.iloc[i]['Position']))
+
+
+# Recommending Similar Players for Lionel Messi
+
+# In[26]:
+
+
+recommend_similar('L. Messi')
+
+
+# Recommending Similar Players for Christiano Ronaldo
+
+# In[27]:
+
+
+recommend_similar('Cristiano Ronaldo')
