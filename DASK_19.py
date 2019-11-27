@@ -354,3 +354,78 @@ recommend_similar('L. Messi')
 
 
 recommend_similar('Cristiano Ronaldo')
+
+# # Wage Prediction
+
+# In[30]:
+
+
+X = dataset.iloc[:,[1,3,4,6,9]]
+y = dataset['Wage']
+
+Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, test_size=0.3, random_state=101)
+
+'''
+from sklearn.preprocessing import StandardScaler
+stsc = StandardScaler()
+Xtrain = stsc.fit_transform(Xtrain)
+Xtest = stsc.fit_transform(Xtest)
+
+'''
+
+def pred_wage(degree, Xtrain, Xtest, ytrain):
+    if degree > 1:
+        poly = PolynomialFeatures(degree = degree)
+        Xtrain = poly.fit_transform(Xtrain)
+        Xtest = poly.fit_transform(Xtest)
+    lm = LinearRegression()
+    lm.fit(Xtrain, ytrain)
+    wages = lm.predict(Xtest)
+    return wages
+
+predicted_wages1 = pred_wage(3, Xtrain, Xtest, ytrain)
+
+sns.regplot(ytest, predicted_wages1, scatter_kws={'alpha':0.3, 'color':'y'})
+plt.xlabel('Actual Wage')
+plt.ylabel('Predicted Wage')
+plt.show()
+
+predicted_wages2 = pred_wage(4, Xtrain, Xtest, ytrain)
+
+sns.regplot(ytest, predicted_wages2, scatter_kws={'alpha':0.3, 'color':'y'})
+plt.xlabel('Actual Wage')
+plt.ylabel('Predicted Wage')
+plt.show()
+
+sns.distplot(ytest-predicted_wages1, bins=200, hist_kws={'color':'r'}, kde_kws={'color':'y'})
+plt.xlim(-50, 50)
+
+
+# As we can see that the residual wages are centered at 0, so our model is good enough
+
+#  Lionel Messi has Age = 31, Overall = 94, Potential = 94, Value = 110, Int. Rep = 5
+
+# In[31]:
+
+
+y_testing = pred_wage(4,Xtrain,[[31,94,94,110,5]],ytrain)
+
+
+# In[33]:
+
+
+print("Predicted Wage is ", y_testing[0])
+
+
+# His predicted Wage is 527.37 Million and his actual Wage is 565 Million
+
+# Neymar Junior has Age = 26, Overall = 92, Potential = 93, Value = 118, Int. Rep = 5
+
+# In[34]:
+
+
+y_testing_2 = pred_wage(4,Xtrain,[[26,92,93,118,5]],ytrain)
+print("Predicted Wage is ", y_testing_2[0])
+
+
+# His predicted Wage is 293.4 Million and his actual Wage is 290 Million
