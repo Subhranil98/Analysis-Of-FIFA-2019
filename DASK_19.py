@@ -112,3 +112,180 @@ def plotCorrelationMatrix(df, graphWidth):
 
 
 plotCorrelationMatrix(dataset, 16)
+
+# Height and weight are not strongly correlated to any other variable, so they don't contribute much towards performance.
+# From the above heatmap the following attributes are strongly correlated :-
+# 1) Overall-Reaction : the better reaction speed of players the better will be their overall performance
+# 2) Overall-Composure : More cool and calm the player better will be the performance
+# 3) LongPassing,BallControl-Heading accuracy 
+# 4) LongShots-ShotPower
+# 5) Dribbling-Position 
+
+# # Number of Unique Clubs and Number of players in such Clubs
+
+# In[12]:
+
+
+print("No of Unique clubs present : ",dataset['Club'].nunique())
+print("No of players in each of the clubs : ", end = '\n')
+print(dataset['Club'].value_counts())
+
+
+# The maximum number of players is 33 in any club
+
+# We find which clubs have 33 players in them
+
+# In[13]:
+
+
+print("Maximum No of players in any club ",max(list(dataset['Club'].value_counts())))
+print(dataset['Club'].value_counts() == 33)
+
+
+# These observations show that the following clubs have highest number of players:
+# 
+# Frosinine
+# Borussia Dortmund
+# Newcastle United
+# Fortuna Düsseldorf
+# RC Celta                      
+# Cardiff City                  
+# Burnley                       
+# AS Monaco
+# TSG 1899 Hoffenheim           
+# Everton                       
+# Empoli                        
+# Rayo Vallecano                
+# Wolverhampton Wanderers       
+# Eintracht Frankfurt           
+# CD Leganés
+# Southampton                   
+# Valencia CF
+
+# # Finding Different Countries and No of Players in them :
+
+# In[14]:
+
+
+print("No of Unique Nationalities present : ",dataset['Nationality'].nunique())
+print("No of players from each Country : ", end = '\n')
+print(dataset['Nationality'].value_counts())
+
+
+# As is evident from the observations , England, Germany, Spain have the highest number of players.
+
+# # Top Player based on the following Attributes
+
+# In[16]:
+
+
+attr=['Overall','Potential','Crossing', 'Finishing', 'HeadingAccuracy', 'ShortPassing', 'Volleys',
+       'Dribbling', 'Curve', 'FKAccuracy', 'LongPassing', 'BallControl',
+       'Acceleration', 'SprintSpeed', 'Agility', 'Reactions', 'Balance',
+       'ShotPower', 'Jumping', 'Stamina', 'Strength', 'LongShots',
+       'Aggression', 'Interceptions', 'Positioning', 'Vision', 'Penalties',
+       'Composure', 'Marking', 'StandingTackle', 'SlidingTackle', 'GKDiving',
+       'GKHandling', 'GKKicking', 'GKPositioning', 'GKReflexes']
+
+
+# In[17]:
+
+
+for i in attr:
+    print("Top performance in ",i," ",str(dataset.loc[dataset[i].idxmax()][0]))
+
+
+# # Plotting graph between Overall Performance and Age
+
+# In[18]:
+
+
+unique_ages = dataset['Age'].unique()
+
+overall_accr_ages = []
+
+for i in unique_ages:
+    d_tr_f = dataset['Age'] == i
+    d = dataset[d_tr_f]
+    m = d['Overall'].mean()
+    overall_accr_ages.append(m)
+    
+plt.scatter(unique_ages,overall_accr_ages)
+plt.xlabel('Unique Ages')
+plt.ylabel('Overall Rating')
+plt.title('Mean Overall vs Age')
+
+
+# From the above plot we observe that the mean overall rating increases as the age increases upto 30. Mean Overall Rating remains constant till 35 beyond which it decreases. We infer that young players gain experience as the play over the years, then reach a saturation level, beyond which with age their performance decreases.
+
+# # Ploting the share of each nation in term of number of players
+
+# In[19]:
+
+
+fig = plt.figure(figsize=(25, 10))
+p = sns.countplot(x='Nationality', data=dataset)
+_ = plt.setp(p.get_xticklabels(), rotation=90)
+
+
+# # Finding distribution of Mean Overall Rating among clubs
+
+# In[20]:
+
+
+unique_clubs = list(dataset['Club'].unique())
+unique_clubs = [x for x in unique_clubs if str(x) != 'nan']
+top_clubs = []
+
+overall_accr_clubs = []
+
+for i in unique_clubs:
+    d_tr_f = dataset['Club'] == i
+    d = dataset[d_tr_f]
+    m = d['Overall'].mean()
+    if m > 75:
+        top_clubs.append(i)
+        overall_accr_clubs.append(m)
+    
+
+plt.bar(top_clubs, overall_accr_clubs)
+# Rotation of the bars names
+plt.xticks( range(len(top_clubs)), top_clubs, rotation=90)
+plt.xlabel('Unique Clubs')
+plt.ylabel('Overall Rating')
+plt.title('Mean Overall Distribution for Top Clubs')
+
+
+# As we can see , all the top 21 teams have comparable Overall Performance, though Juventis is max.
+
+# # Observing the effect of age on Wages
+
+# In[21]:
+
+
+mean_wage_per_age = dataset.groupby('Age')['Wage'].mean()
+p = sns.barplot(x = mean_wage_per_age.index, y = mean_wage_per_age.values)
+p = plt.xticks(rotation=90)
+
+
+# # Variation of rating with age
+
+# In[24]:
+
+
+plt.figure(figsize=[16,5])
+plt.suptitle('Overall Rating Vs Age', fontsize=16)
+
+plt.subplot(1,2,1)
+bin_x = np.arange(dataset['Age'].min(), dataset['Age'].max()+1, 1)
+bin_y = np.arange(dataset['Overall'].min(), dataset['Overall'].max()+2, 2)
+plt.hist2d(x = dataset['Age'], y = dataset['Overall'], cmap="YlGnBu", bins=[bin_x, bin_y])
+plt.colorbar()
+plt.xlabel('Age (years)')
+plt.ylabel('Overall Rating')
+
+plt.subplot(1,2,2)
+plt.scatter(x = dataset['Age'], y = dataset['Overall'], alpha=0.25, marker='.')
+plt.xlabel('Age (years)')
+plt.ylabel('Overall Rating')
+plt.show()
