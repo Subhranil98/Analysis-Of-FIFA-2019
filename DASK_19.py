@@ -607,3 +607,104 @@ plt.legend()
 plt.show()
 
 
+# # Value Prediction
+
+# In[47]:
+
+
+players_df = pd.read_csv('F:\Engineering Books\Sem 5\Data Analytics\Data Analytics\Project\data.csv')
+players_df.head()
+
+players_df = players_df.drop(columns=['ID','Photo','Club Logo','Work Rate','Body Type','Real Face','Loaned From',
+                                     'LS','ST','RS','LW','LF','CF','RF','RW','LAM','CAM','RAM','LM','LCM','CM',
+                                     'RCM','RM','LWB','LDM','CDM','RDM','RWB','LB','LCB','CB','RCB','RB'])
+players_df = players_df.drop(players_df.columns[0], axis=1)
+players_df.info()
+
+
+players_df['Value']=players_df['Value'].str[1:-1]
+players_df['Wage']=players_df['Wage'].str[1:-1]
+players_df['Release Clause']=players_df['Release Clause'].str[1:-1]
+
+players_df = players_df.dropna(axis = 0, how = 'any')
+players_df.info()
+
+def findValue(value):
+    splitted = re.split('(\d+\.\d+|\d+)([A-Z])',value)
+    try:
+        if splitted[2] is 'M':
+            return pd.to_numeric(splitted[1])
+        else:
+            return pd.to_numeric(splitted[1])/1000
+    except IndexError:
+        return 0
+
+def findWages(value):
+    return re.findall('\d+\.\d+|\d+',value)[0]
+
+def findAttribute(value):
+    return re.findall('\d+',value)
+            
+#players_df['Value'] = players_df['Value'].apply(findValue)
+#players_df['Wage'] = players_df['Wage'].apply(findWages)
+players_df['Value'] = pd.to_numeric(players_df['Value'])
+players_df['Wage'] = pd.to_numeric(players_df['Wage'])
+players_df
+
+
+
+X = players_df.iloc[:,4:6]
+y = players_df.iloc[:,7]
+print(players_df)
+train_X, test_X, train_y, test_y = train_test_split(X, y, test_size = 0.20, random_state = 42)
+print('Training matrix of features shape: ', train_X.shape)
+print('Training dependent variable shape: ', train_y.shape)
+print('Test matrix of features shape: ', test_X.shape)
+print('Test dependent variable shape: ', test_y.shape)
+
+
+n_estimators = [int(x) for x in np.linspace(start=200, stop= 2000, num=10)]
+max_features = ['auto','sqrt']
+max_depth = [int(x) for x in np.linspace(10,110,num=11)]
+max_depth.append(None)
+min_samples_split = [2,5,10]
+min_samples_leaf = [1,2,4]
+bootstrap = [True,False]
+random_grid = {'n_estimators': n_estimators,
+              'max_features': max_features,
+              'max_depth': max_depth,
+              'min_samples_split': min_samples_split,
+              'min_samples_leaf': min_samples_leaf,
+              'bootstrap': bootstrap}
+regressor = RandomForestRegressor(n_estimators = 100, random_state = 0)
+
+regressor.fit(train_X, train_y)
+
+#For J. Oblak overall=90 and Potential=93 
+y_pred = regressor.predict([[90,93]])
+print(y_pred)
+#Actual =68 and predicted=70.70
+
+
+
+#For Tah J overall=83 and Potential=88 
+y_pred = regressor.predict([[83,88]])
+print(y_pred)
+#Actual =34 and predicted=31.93
+
+y_pred = regressor.predict(test_X)
+#trying to find correlation between y_test and the predicted value 
+
+
+# In[46]:
+
+
+plt.scatter(test_y,y_pred)
+plt.show()
+
+
+# Since we can see that there is fairly strong correlation between the two so we can say that our model is a good predictor
+
+
+
+
