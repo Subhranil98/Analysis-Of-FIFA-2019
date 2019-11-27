@@ -289,3 +289,36 @@ plt.scatter(x = dataset['Age'], y = dataset['Overall'], alpha=0.25, marker='.')
 plt.xlabel('Age (years)')
 plt.ylabel('Overall Rating')
 plt.show()
+
+# # Finding Similar Players using KNN - Recommendation System
+
+# In[25]:
+
+
+#Selecting columns to find similarity among players
+
+attributes = dataset.iloc[:, 16:]
+attributes['Skill Moves'] = dataset['Skill Moves']
+attributes['Age'] = dataset['Age']
+workrate = dataset['Work Rate'].str.get_dummies(sep='/ ')
+attributes = pd.concat([attributes, workrate], axis=1)
+df = attributes
+attributes = attributes.dropna()
+df['Name'] = dataset['Name']
+df['Position'] = dataset['Position']
+df = df.dropna()
+print(attributes.columns)
+
+#Displaying our attribute set
+attributes.head()
+
+#Standardize the dataset
+
+scaled = StandardScaler()
+X = scaled.fit_transform(attributes)
+
+#Create recommendations using NearestNeighbors ML
+
+recommendations = NearestNeighbors(n_neighbors=5,algorithm='kd_tree')
+recommendations.fit(X)
+
