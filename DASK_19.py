@@ -429,3 +429,78 @@ print("Predicted Wage is ", y_testing_2[0])
 
 
 # His predicted Wage is 293.4 Million and his actual Wage is 290 Million
+
+
+# # Recommending a Team based on Feature Values to Club Managers 
+
+# In[35]:
+
+
+player_features = ['Crossing', 'Finishing', 'HeadingAccuracy',
+       'ShortPassing', 'Volleys', 'Dribbling', 'Curve', 'FKAccuracy',
+       'LongPassing', 'BallControl', 'Acceleration', 'SprintSpeed',
+       'Agility', 'Reactions', 'Balance', 'ShotPower', 'Jumping',
+       'Stamina', 'Strength', 'LongShots', 'Aggression', 'Interceptions',
+       'Positioning', 'Vision', 'Penalties', 'Composure', 'Marking',
+       'StandingTackle', 'SlidingTackle', 'GKDiving', 'GKHandling',
+       'GKKicking', 'GKPositioning', 'GKReflexes']
+
+df_postion  = pd.DataFrame()
+for position_name, features in dataset.groupby(dataset['Position'])[player_features].mean().iterrows():
+    top_features = dict(features.nlargest(5))
+    df_postion[position_name] = tuple(top_features)
+df_postion.head()
+
+
+df_best = pd.DataFrame.copy(dataset)
+df_position_y = pd.DataFrame.copy(df_postion)
+del df_position_y['RAM']
+df_best.head()
+posi = []
+player = []
+club_l = []
+for col in df_position_y.columns:
+    tmp_df = pd.DataFrame()
+    #print(col)
+    l = [df_postion[col].values]
+    l = l[0]
+    l = list(l)
+    l.append('Name')
+    tmp_df = pd.DataFrame.copy(df_best[df_best['Position'] == col][l])
+    tmp_df['mean'] = np.mean(tmp_df.iloc[: , :-1] , axis = 1)
+    name = tmp_df['Name'][tmp_df['mean'] == tmp_df['mean'].max()].values[0]
+    club = df_best['Club'][df_best['Name'] == str(name)].values[0]
+    
+    posi.append(col)
+    player.append(name)
+    club_l.append(club)
+    
+gk = ['GK']
+forward = ['LS', 'ST', 'RS','LF', 'CF', 'RF']
+midfeilder = ['LW','RW', 'LAM', 'CAM', 'RAM', 'LM', 'LCM', 'CM',
+              'RCM', 'RM', 'LDM', 'CDM', 'RDM' ]
+defenders = ['LWB','RWB', 'LB', 'LCB', 'CB',]
+    
+print()
+print('GoalKeeper : ')
+for p , n , c in zip(posi , player , club_l):
+    if p in gk:
+        print('{} [Club : {} , Position : {} , Age : {}]'.format(n , c , p ,
+                                                                dataset['Age'][dataset['Name'] == n].values[0]))
+
+print('\nFORWARD : ')
+for p , n , c in zip(posi , player , club_l):
+    if p in forward:
+        print('{} [Club : {} , Position : {} , Age : {}]'.format(n , c , p , 
+                                                                dataset['Age'][dataset['Name'] == n].values[0]))
+print('\nMIDFEILDER : ')
+for p , n , c in zip(posi , player , club_l):
+    if p in midfeilder:
+        print('{} [Club : {} , Position : {} , Age : {}]'.format(n , c , p , 
+                                                                dataset['Age'][dataset['Name'] == n].values[0]))
+print('\nDefender : ')
+for p , n , c in zip(posi , player , club_l):
+    if p in defenders:
+        print('{} [Club : {} , Position : {} , Age : {}]'.format(n , c , p , 
+                                                                dataset['Age'][dataset['Name'] == n].values[0]))
+  
