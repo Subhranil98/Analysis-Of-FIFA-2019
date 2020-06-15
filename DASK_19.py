@@ -26,6 +26,7 @@ import re
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import RandomizedSearchCV
 import warnings
+warnings.filterwarnings("ignore")
 
 
 # Importing the Dataset
@@ -112,6 +113,7 @@ def plotCorrelationMatrix(df, graphWidth):
 
 
 plotCorrelationMatrix(dataset, 16)
+
 
 # Height and weight are not strongly correlated to any other variable, so they don't contribute much towards performance.
 # From the above heatmap the following attributes are strongly correlated :-
@@ -290,6 +292,7 @@ plt.xlabel('Age (years)')
 plt.ylabel('Overall Rating')
 plt.show()
 
+
 # # Finding Similar Players using KNN - Recommendation System
 
 # In[25]:
@@ -354,6 +357,7 @@ recommend_similar('L. Messi')
 
 
 recommend_similar('Cristiano Ronaldo')
+
 
 # # Wage Prediction
 
@@ -430,7 +434,6 @@ print("Predicted Wage is ", y_testing_2[0])
 
 # His predicted Wage is 293.4 Million and his actual Wage is 290 Million
 
-
 # # Recommending a Team based on Feature Values to Club Managers 
 
 # In[35]:
@@ -503,7 +506,9 @@ for p , n , c in zip(posi , player , club_l):
     if p in defenders:
         print('{} [Club : {} , Position : {} , Age : {}]'.format(n , c , p , 
                                                                 dataset['Age'][dataset['Name'] == n].values[0]))
-        
+  
+
+
 # # Clustering Players based on K-Means Clustering and Elbow Method:
 
 # # Performing K Means Clustering on Players Based on Age , Overall and Potential
@@ -584,8 +589,10 @@ plt.ylabel('WCSS')
 plt.show()
 
 
+# In[41]:
 
-  # Fitting K-Means to the dataset
+
+# Fitting K-Means to the dataset
 kmeans = KMeans(n_clusters = 4, init = 'k-means++', random_state = 42)
 y_kmeans = kmeans.fit_predict(X)
 
@@ -704,6 +711,8 @@ plt.show()
 
 
 # Since we can see that there is fairly strong correlation between the two so we can say that our model is a good predictor
+
+# In[ ]:
 
 
 
